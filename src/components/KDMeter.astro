@@ -1,0 +1,13 @@
+---
+interface Props {
+  kd: number; // 0..100
+  label?: string;
+}
+const { kd, label = 'Difficulty' } = Astro.props;
+const pct = Math.max(2, Math.min(100, kd));
+---
+
+<span class="kd">
+  <span>{label} <b>{kd}</b>/100</span>
+  <span class="bar" role="img" aria-label={`${label} ${kd} out of 100`}><i style={`width:${pct}%`}></i></span>
+</span>

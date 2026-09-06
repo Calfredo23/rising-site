@@ -4,19 +4,24 @@ import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
 
 const posts = (await getCollection('posts')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 ---
 
-<Base title="All posts" description="Every verdict published on On the Rise — rising dev tools, compared honestly." path="/posts/">
-  <h1>All posts</h1>
-  <p class="post-meta">{posts.length} verdict{posts.length === 1 ? '' : 's'} published.</p>
-  {posts.map((post) => (
+<Base title="All posts" description="Every verdict published on On the Rise — rising dev tools, compared honestly, method shown." path="/posts/">
+  <div class="section-head" style="margin-top: 0;">
+    <h2>Observation log — all entries</h2>
+    <span class="more">{posts.length} shipped</span>
+  </div>
+  {posts.map((post, i) => (
     <PostCard
       href={`/posts/${post.id}/`}
       title={post.data.title}
       description={post.data.description}
-      meta={post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      obs={i + 1}
+      date={post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+      kd={post.data.kd ? post.data.kd.match(/KD (\d+)/)?.[1] : undefined}
+      spark={[0.1, 0.18, 0.14, 0.3, 0.26, 0.44, 0.4, 0.58, 0.72, 0.9]}
     />
   ))}
 </Base>

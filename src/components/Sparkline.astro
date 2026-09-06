@@ -1,0 +1,36 @@
+---
+// Signature element: the rising sparkline. Animated draw on load,
+// disabled under prefers-reduced-motion (see global.css).
+interface Props {
+  points?: number[]; // values 0..1, left → right
+  color?: string;
+  width?: number;
+  height?: number;
+  animate?: boolean;
+}
+const {
+  points = [0.12, 0.2, 0.16, 0.3, 0.42, 0.38, 0.55, 0.6, 0.78, 0.92],
+  color = '#0a7c42',
+  width = 120,
+  height = 36,
+  animate = true,
+} = Astro.props;
+
+const pad = 4;
+const xs = points.map((_, i) => pad + (i / (points.length - 1)) * (width - pad * 2));
+const ys = points.map((v) => height - pad - v * (height - pad * 2));
+const path = xs.map((x, i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+const lastX = xs[xs.length - 1];
+const lastY = ys[ys.length - 1];
+const id = `spark-${Math.abs(points.reduce((a, b) => a + b, points.length)).toString(36).slice(0, 6)}-${width}`;
+---
+
+<svg class="spark" viewBox={`0 0 ${width} ${height}`} width={width} height={height} fill="none" aria-hidden="true">
+  <path d={path} stroke={color} stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class={animate ? 'spark-path' : undefined} />
+  <circle cx={lastX} cy={lastY} r="3" fill={color}>
+    {animate && <animate attributeName="opacity" from="0" to="1" begin="0.9s" dur="0.3s" fill="freeze" />}
+  </circle>
+</svg>
+<style>
+  .spark { display: block; }
+</style>

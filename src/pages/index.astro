@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
-import { SITE_NAME, SITE_TAGLINE, SITE_URL, SITE_DESCRIPTION } from '../consts';
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '../consts';
 
 const posts = (await getCollection('posts')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 
 const jsonLd = {
@@ -14,37 +14,36 @@ const jsonLd = {
   name: SITE_NAME,
   url: SITE_URL,
   description: SITE_DESCRIPTION,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${SITE_URL}/posts/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
 };
 ---
 
 <Base title="Home" description={SITE_DESCRIPTION} path="/" jsonLd={jsonLd}>
   <section class="hero">
-    <div class="badge-row">
-      <span class="badge">Weekly verdicts</span>
-      <span class="badge">Method shown</span>
-      <span class="badge">No affiliate fluff</span>
-    </div>
-    <h1>Dev tools, verdicts, and what is climbing this week.</h1>
-    <p>
-      We watch tools that are gaining momentum, test the claims around them, and publish
-      one honest verdict at a time. Every pick shows its evidence — keyword difficulty,
-      SERP reality, and sources — so you can check our work.
+    <h1>What is climbing right now — and which tool you should actually pick.</h1>
+    <p class="lede">
+      We track developer tools that are gaining momentum, check the claims around them, and
+      publish one verdict at a time. Difficulty scores, SERP reality, and sources ship with
+      every entry — so you can check our work instead of trusting it.
     </p>
-    <p><a href="/method/">See exactly how we pick topics →</a></p>
+    <p class="method-note">
+      <a href="/method/">READ THE TOPIC METHOD →</a>&nbsp;&nbsp;no affiliate links · corrections in public · no invented numbers
+    </p>
   </section>
 
-  <h2 class="section-title">Latest verdicts</h2>
-  {posts.map((post) => (
+  <div class="section-head">
+    <h2>Observation log</h2>
+    <a class="more" href="/posts/">All entries →</a>
+  </div>
+
+  {posts.map((post, i) => (
     <PostCard
       href={`/posts/${post.id}/`}
       title={post.data.title}
       description={post.data.description}
-      meta={post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      obs={i + 1}
+      date={post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+      kd={post.data.kd ? post.data.kd.match(/KD (\d+)/)?.[1] : undefined}
+      spark={[0.1, 0.18, 0.14, 0.3, 0.26, 0.44, 0.4, 0.58, 0.72, 0.9]}
     />
   ))}
 </Base>

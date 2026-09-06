@@ -3,13 +3,35 @@ interface Props {
   href: string;
   title: string;
   description: string;
-  meta?: string;
+  obs: number;
+  date: string;
+  kd?: string;
+  spark?: number[];
 }
-const { href, title, description, meta } = Astro.props;
+const { href, title, description, obs, date, kd, spark } = Astro.props;
+const obsId = `OBS-${String(obs).padStart(3, '0')}`;
 ---
 
-<a href={href} class="card">
-  {meta && <p class="meta">{meta}</p>}
-  <h3>{title}</h3>
-  <p>{description}</p>
+<a href={href} class="entry">
+  <div class="entry-meta">
+    <span class="obs">{obsId}</span><br />
+    {date}
+  </div>
+  <div class="entry-body">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <span class="entry-go">Read verdict <span class="entry-arrow">→</span></span>
+  </div>
+  <div class="entry-side">
+    <span class="stamp stamp-rise">▲ rising</span>
+    {spark && (
+      <svg viewBox="0 0 100 26" width="100" height="26" fill="none" aria-hidden="true">
+        <path
+          d={spark.map((v, i) => `${i === 0 ? 'M' : 'L'}${(2 + (i / (spark.length - 1)) * 96).toFixed(1)},${(24 - v * 20).toFixed(1)}`).join(' ')}
+          stroke="#0a7c42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        />
+      </svg>
+    )}
+    {kd && <span class="kd">KD <b>{kd}</b></span>}
+  </div>
 </a>
