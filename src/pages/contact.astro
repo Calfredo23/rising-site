@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import { GITHUB_URL } from '../consts';
+---
+
+<Base
+  title="Contact"
+  description="Corrections, topic suggestions, or hello — how to reach On the Rise."
+  path="/contact/"
+>
+  <article class="prose">
+    <h1>Contact</h1>
+    <p>
+      Found an error in a verdict? Disagree with one? Have a rising tool we should look at?
+      Good — corrections and disagreements make the next post better.
+    </p>
+    <ul>
+      <li>Fastest: <a href={GITHUB_URL} rel="noopener">open an issue or message via GitHub</a></li>
+      <li>RSS: <a href="/rss.xml">subscribe here</a> — every new verdict lands in your reader</li>
+    </ul>
+    <p>We read everything and correct in public.</p>
+  </article>
+</Base>

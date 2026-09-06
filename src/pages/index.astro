@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import { SITE_NAME, SITE_TAGLINE, SITE_URL, SITE_DESCRIPTION } from '../consts';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/posts/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<Base title="Home" description={SITE_DESCRIPTION} path="/" jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="badge-row">
+      <span class="badge">Weekly verdicts</span>
+      <span class="badge">Method shown</span>
+      <span class="badge">No affiliate fluff</span>
+    </div>
+    <h1>Dev tools, verdicts, and what is climbing this week.</h1>
+    <p>
+      We watch tools that are gaining momentum, test the claims around them, and publish
+      one honest verdict at a time. Every pick shows its evidence — keyword difficulty,
+      SERP reality, and sources — so you can check our work.
+    </p>
+    <p><a href="/method/">See exactly how we pick topics →</a></p>
+  </section>
+
+  <h2 class="section-title">Latest verdicts</h2>
+  {posts.map((post) => (
+    <PostCard
+      href={`/posts/${post.id}/`}
+      title={post.data.title}
+      description={post.data.description}
+      meta={post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+    />
+  ))}
+</Base>
