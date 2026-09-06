@@ -1,5 +1,5 @@
 ---
-title: 'Claude Code Tips: The 8 Habits That Matter After Install'
+title: 'Claude Code Tips That Matter After Install'
 description: 'Install guides are everywhere. These are the habits that matter in week two: CLAUDE.md, plan mode, context discipline, verification, push-back.'
 pubDate: 2026-09-06
 tags: ['ai tools', 'claude code', 'workflow']

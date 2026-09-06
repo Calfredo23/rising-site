@@ -1,5 +1,5 @@
 ---
-title: 'Tailwind vs CSS Modules: Per Component, Not Per Project'
+title: 'Tailwind vs CSS Modules: Choose Per Component'
 description: 'Utility classes or scoped CSS? The honest answer: per component. Where each approach wins, and the hybrid most teams quietly run in production.'
 pubDate: 2026-09-06
 tags: ['css', 'tailwind', 'css modules', 'frontend']
