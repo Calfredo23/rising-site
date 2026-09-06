@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://on-the-rise.pages.dev/sitemap-index.xml
+Sitemap: https://rising-site.catimbangcedrickalfredo.workers.dev/sitemap-index.xml
